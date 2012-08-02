@@ -28955,10 +28955,7 @@ int initialize_engine(int argc,char*argv[])
 
   write_log_debug("Switching to graphics mode");
 
-  if (switch_to_graphics_mode(initasx, initasy, scrnwid, scrnhit, firstDepth, secondDepth))
-  {
-    bool errorAndExit = true;
-
+    bool errorAndExit = false;
     if (((usetup.gfxFilterID == NULL) || 
       (stricmp(usetup.gfxFilterID, "None") == 0)) &&
       (scrnwid == 320))
@@ -28980,8 +28977,10 @@ int initialize_engine(int argc,char*argv[])
         errorAndExit = false;
       }
 
+    } else if (switch_to_graphics_mode(initasx, initasy, scrnwid, scrnhit, firstDepth, secondDepth))
+    {
+      errorAndExit = true;
     }
-    
     if (errorAndExit)
     {
       proper_exit=1;
@@ -29004,7 +29003,6 @@ int initialize_engine(int argc,char*argv[])
        initasx, initasy, firstDepth, allegro_error);
       return EXIT_NORMAL;
     }
-  }
   
   //screen = _filter->ScreenInitialized(screen, final_scrn_wid, final_scrn_hit);
   _old_screen = screen;
